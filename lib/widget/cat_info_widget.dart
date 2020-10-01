@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CatInfoWidget extends StatelessWidget {
   final dynamic catInfo;
@@ -18,7 +19,7 @@ class CatInfoWidget extends StatelessWidget {
               child: _buildImageWidget(),
             ),
             Expanded(
-              flex: 3,
+              flex: 2,
               child: _buildInfoListWidget(),
             )
           ],
@@ -31,10 +32,38 @@ class CatInfoWidget extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Text(catInfo.temperament),
-          Text(catInfo.lifeSpan),
-          Text(catInfo.wikipediaUrl),
-          Text(catInfo.origin),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4.0),
+            child: Text(
+              "Temperament: ${catInfo.temperament}",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4.0),
+            child: Text(
+              "Origin: ${catInfo.origin}",
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4.0),
+            child: Text(
+              "Life span: ${catInfo.lifeSpan}",
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4.0),
+            child: InkWell(
+              child: Text(
+                "Wikipedia",
+                style: TextStyle(fontSize: 18.0, color: Colors.blue),
+              ),
+              onTap: () => launch(catInfo.wikipediaUrl),
+            ),
+          ),
         ],
       ),
     );
@@ -45,6 +74,7 @@ class CatInfoWidget extends StatelessWidget {
       margin: const EdgeInsets.all(20.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CachedNetworkImage(
             imageUrl: catInfo.imageUrl,
