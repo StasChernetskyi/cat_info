@@ -5,10 +5,8 @@ class Cat {
   final String name;
   final String temperament;
   final String lifeSpan;
-  final String altNames;
   final String wikipediaUrl;
   final String origin;
-  final String weightImperial;
   String imageUrl;
 
   Cat({
@@ -16,10 +14,8 @@ class Cat {
     @required this.name,
     @required this.temperament,
     @required this.lifeSpan,
-    @required this.altNames,
     @required this.wikipediaUrl,
     @required this.origin,
-    @required this.weightImperial,
     this.imageUrl,
   });
 
@@ -29,10 +25,8 @@ class Cat {
       name: json['name'],
       temperament: json['temperament'],
       lifeSpan: json['life_span'],
-      altNames: json['alt_names'],
       wikipediaUrl: json['wikipedia_url'],
       origin: json['origin'],
-      weightImperial: json['weight_imperial'],
       imageUrl: "",
     );
   }

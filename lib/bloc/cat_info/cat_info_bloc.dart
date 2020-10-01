@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cat_info.dart';
+import 'bloc.dart';
 import 'package:cat_info/repository/cat_repository.dart';
 
 class CatInfoBloc extends Bloc<CatInfoEvent, CatInfoState> {
   final CatRepository catRepository;
 
-  CatInfoBloc({@required this.catRepository})
-      : super(CatInfoLoadInProgress());
+  CatInfoBloc({@required this.catRepository}) : super(CatInfoInitial());
 
   @override
   Stream<CatInfoState> mapEventToState(CatInfoEvent event) async* {
@@ -19,8 +18,9 @@ class CatInfoBloc extends Bloc<CatInfoEvent, CatInfoState> {
 
   Stream<CatInfoState> _mapCatInfoLoadedToState() async* {
     try {
-      final cats = await catRepository.getCats();
-      yield CatInfoLoadSuccess(cats: cats);
+      yield CatInfoLoadInProgress();
+      final catsInfo = await catRepository.getCatsInfo();
+      yield CatInfoLoadSuccess(catsInfo: catsInfo);
     } catch (_) {
       yield CatInfoLoadFailure();
     }
