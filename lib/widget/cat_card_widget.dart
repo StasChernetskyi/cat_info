@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cat_info/bloc/page_navigator/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:cat_info/model/cat.dart';
+import 'package:cat_info/page/pages.dart';
 
 class CatCardWidget extends StatelessWidget {
-  final catInfo;
+  final Cat catInfo;
 
   CatCardWidget({@required this.catInfo}) : assert(catInfo != null);
 
@@ -19,9 +19,10 @@ class CatCardWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          BlocProvider.of<PageNavigatorBloc>(context).add(
-            PageNavigatorToCatInfoEvent(
-              catInfo: catInfo,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CatInfoPage(catInfo: catInfo),
             ),
           );
         },
@@ -32,14 +33,23 @@ class CatCardWidget extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  child: CachedNetworkImage(
-                    imageUrl: catInfo.imageUrl,
-                    fit: BoxFit.contain,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                      value: downloadProgress.progress,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Hero(
+                    tag: catInfo.imageUrl,
+                    child: Image.network(
+                      catInfo.imageUrl,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes
+                                : null,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

@@ -13,7 +13,7 @@ class CatApiClient {
 
   CatApiClient({@required this.httpClient}) : assert(httpClient != null);
 
-  Future<List<dynamic>> fetchCatsInfo() async {
+  Future<List<Cat>> fetchCatsInfo() async {
     final catsInfoUrl = '$baseUrl/breeds?page=0&api_key=$api_key&limit=$limit';
     final catsInfoResponse = await this.httpClient.get(catsInfoUrl);
 
@@ -22,9 +22,10 @@ class CatApiClient {
     }
 
     final catsInfoJson = jsonDecode(catsInfoResponse.body);
-    return catsInfoJson
-        .map((catInfoJson) => Cat.fromJson(catInfoJson))
-        .toList();
+    List<Cat> returnListCatsInfo = List<Cat>();
+    catsInfoJson.forEach(
+        (catInfoJson) => returnListCatsInfo.add(Cat.fromJson(catInfoJson)));
+    return returnListCatsInfo;
   }
 
   Future<String> fetchCatImageUrl({@required String breed_id}) async {

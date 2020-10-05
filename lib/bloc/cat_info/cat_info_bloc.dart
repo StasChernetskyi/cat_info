@@ -7,7 +7,7 @@ import 'package:cat_info/repository/cat_repository.dart';
 class CatInfoBloc extends Bloc<CatInfoEvent, CatInfoState> {
   final CatRepository catRepository;
 
-  CatInfoBloc({@required this.catRepository}) : super(CatInfoInitial());
+  CatInfoBloc({@required this.catRepository}) : super(CatInfoLoadInProgress());
 
   @override
   Stream<CatInfoState> mapEventToState(CatInfoEvent event) async* {

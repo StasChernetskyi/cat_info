@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:cat_info/model/cat.dart';
+
 class CatInfoWidget extends StatelessWidget {
-  final dynamic catInfo;
+  final Cat catInfo;
 
   CatInfoWidget({@required this.catInfo}) : assert(catInfo != null);
 
@@ -76,12 +77,22 @@ class CatInfoWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CachedNetworkImage(
-            imageUrl: catInfo.imageUrl,
-            fit: BoxFit.contain,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(
-              value: downloadProgress.progress,
+          Hero(
+            tag: catInfo.imageUrl,
+            child: Image.network(
+              catInfo.imageUrl,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                        : null,
+                  ),
+                );
+              },
             ),
           ),
         ],

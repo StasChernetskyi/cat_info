@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-abstract class CatInfoState {}
+import 'package:cat_info/model/cat.dart';
 
-class CatInfoInitial extends CatInfoState {}
+abstract class CatInfoState {}
 
 class CatInfoLoadInProgress extends CatInfoState {}
 
 class CatInfoLoadSuccess extends CatInfoState {
-  final List<dynamic> catsInfo;
+  final List<Cat> catsInfo;
 
   CatInfoLoadSuccess({@required this.catsInfo}) : assert(catsInfo != null);
 }

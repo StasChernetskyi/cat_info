@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:cat_info/repository/cat_api_client.dart';
 import 'package:cat_info/repository/cat_repository.dart';
 import 'package:cat_info/bloc/cat_info/bloc.dart';
-import 'package:cat_info/bloc/page_navigator/bloc.dart';
 import 'package:cat_info/page/pages.dart';
 
 void main() {
@@ -31,35 +30,25 @@ class CatInfoApp extends StatelessWidget {
           BlocProvider(
             create: (context) => CatInfoBloc(
               catRepository: catRepository,
-            ),
-          ),
-          BlocProvider(
-            create: (context) => PageNavigatorBloc(),
+            )..add(CatInfoRequested()),
           ),
         ],
         child: BlocBuilder<CatInfoBloc, CatInfoState>(
           builder: (context, loadState) {
-            if (loadState is CatInfoInitial ||
-                loadState is CatInfoLoadFailure) {
-              BlocProvider.of<CatInfoBloc>(context).add(CatInfoRequested());
-            }
-
             if (loadState is CatInfoLoadInProgress) {
               return SplashScreen();
             } else if (loadState is CatInfoLoadSuccess) {
-              return BlocBuilder<PageNavigatorBloc, PageNavigatorState>(
-                  builder: (context, navigatorState) {
-                if (navigatorState is CatInfoPageState) {
-                  return CatInfoPage(catInfo: navigatorState.catInfo);
-                } else {
-                  return CatListPage(catsInfo: loadState.catsInfo);
-                }
-              });
+              return CatListPage(catsInfo: loadState.catsInfo);
+            } else {
+              onCatInfoLoadFailure(context);
+              return SplashScreen();
             }
-            return SplashScreen();
           },
         ),
       ),
     );
   }
+
+  void onCatInfoLoadFailure(BuildContext context) =>
+      BlocProvider.of<CatInfoBloc>(context).add(CatInfoRequested());
 }

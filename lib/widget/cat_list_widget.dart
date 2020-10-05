@@ -1,8 +1,10 @@
-import 'package:cat_info/widget/cat_card_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cat_info/model/cat.dart';
+import 'package:cat_info/widget/cat_card_widget.dart';
+
 class CatListWidget extends StatelessWidget {
-  final List<dynamic> catsInfo;
+  final List<Cat> catsInfo;
 
   CatListWidget({@required this.catsInfo}) : assert(catsInfo.isNotEmpty);
 
