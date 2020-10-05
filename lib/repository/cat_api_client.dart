@@ -8,7 +8,7 @@ import 'package:cat_info/model/cat.dart';
 class CatApiClient {
   static const String baseUrl = 'https://api.thecatapi.com/v1';
   static const String api_key = '6b442799-876d-4387-9678-39f75678feb3';
-  static const int limit = 30;
+  static const int limit = 20;
   final Client httpClient;
 
   CatApiClient({@required this.httpClient}) : assert(httpClient != null);
